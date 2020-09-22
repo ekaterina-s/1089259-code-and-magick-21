@@ -9,6 +9,7 @@ var FONT_GAP = 16;
 var GAP_BETWEEN_THE_COLUMNS = 50;
 var BAR_WIDTH = 40;
 var BAR_HEIGHT = 150;
+var MY_COLOR = 'rgba(255, 0, 0, 1)';
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -61,7 +62,7 @@ window.renderStatistics = function (ctx, players, times) {
     );
 
     if (players[i] === `Вы`) {
-      ctx.fillStyle = `rgba(255, 0, 0, 1)`;
+      ctx.fillStyle = MY_COLOR;
     } else {
       ctx.fillStyle = 'hsl(240, ' + Math.floor(Math.random() * 101) + '%, 50%)';
     }
