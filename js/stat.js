@@ -9,7 +9,9 @@ var FONT_GAP = 16;
 var GAP_BETWEEN_THE_COLUMNS = 50;
 var BAR_WIDTH = 40;
 var BAR_HEIGHT = 150;
-var MY_COLOR = 'rgba(255, 0, 0, 1)';
+var TEXT_COLOR = `#000`;
+var MY_COLOR = `rgba(255, 0, 0, 1)`;
+
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -24,6 +26,14 @@ var getMaxElement = function (arr) {
     }
   }
   return maxElement;
+};
+
+var fillTheDataByX = function (index) {
+  return CLOUD_X + GAP + GAP_BETWEEN_THE_COLUMNS + (GAP_BETWEEN_THE_COLUMNS + BAR_WIDTH) * index;
+};
+
+var randomColorSaturation = function () {
+  return 'hsl(240, ' + Math.floor(Math.random() * 101) + '%, 50%)';
 };
 
 
@@ -41,38 +51,39 @@ window.renderStatistics = function (ctx, players, times) {
       `#fff`
   );
 
-  ctx.fillStyle = `#000`;
+  ctx.fillStyle = TEXT_COLOR;
   ctx.font = `16px PT Mono`;
   ctx.fillText(`Ура вы победили!`, 120, 40);
   ctx.fillText(`Список результатов:`, 120, 60);
 
   var maxTime = getMaxElement(times);
 
+
   for (var i = 0; i < players.length; i++) {
     ctx.fillText(
         players[i],
-        CLOUD_X + GAP + GAP_BETWEEN_THE_COLUMNS + (GAP_BETWEEN_THE_COLUMNS + BAR_WIDTH) * i,
+        fillTheDataByX(i),
         CLOUD_Y + CLOUD_HEIGHT - GAP
     );
 
     ctx.fillText(
         Math.round(times[i]),
-        CLOUD_X + GAP + GAP_BETWEEN_THE_COLUMNS + (GAP_BETWEEN_THE_COLUMNS + BAR_WIDTH) * i,
+        fillTheDataByX(i),
         CLOUD_Y + CLOUD_HEIGHT - (BAR_HEIGHT * times[i] / maxTime) - FONT_GAP * 2
     );
 
     if (players[i] === `Вы`) {
       ctx.fillStyle = MY_COLOR;
     } else {
-      ctx.fillStyle = 'hsl(240, ' + Math.floor(Math.random() * 101) + '%, 50%)';
+      ctx.fillStyle = randomColorSaturation();
     }
 
     ctx.fillRect(
-        CLOUD_X + GAP + GAP_BETWEEN_THE_COLUMNS + (GAP_BETWEEN_THE_COLUMNS + BAR_WIDTH) * i,
+        fillTheDataByX(i),
         CLOUD_Y + CLOUD_HEIGHT - GAP - FONT_GAP,
         BAR_WIDTH,
         -(BAR_HEIGHT * times[i]) / maxTime
     );
-    ctx.fillStyle = `#000`;
+    ctx.fillStyle = TEXT_COLOR;
   }
 };
