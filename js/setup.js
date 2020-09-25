@@ -5,6 +5,7 @@ var SURMAMES = [`да Марья`, `Верон`, `Мирабелла`, `Валь
 var COAT_COLORS = [`rgb(101, 137, 164)`, `rgb(241, 43, 107)`, `rgb(146, 100, 161)`, `rgb(56, 159, 117)`,
   `rgb(215, 210, 55)`, `rgb(0, 0, 0)`];
 var EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
+var generatedWizards = [];
 
 var setup = document.querySelector('.setup');
 setup.classList.remove('hidden');
@@ -13,17 +14,18 @@ var generateRandomElement = function (array) {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-var generatedWizards = [];
-
-for (var i = 0; i < 4; i++) {
-  var generatedWizard = {
+var generateObject = function () {
+  var object = {
     name: generateRandomElement(NAMES) + ' ' + generateRandomElement(SURMAMES),
     coatColor: generateRandomElement(COAT_COLORS),
     eyeColor: generateRandomElement(EYES_COLORS)
   };
+  return object;
+};
 
-  generatedWizards.push(generatedWizard);
-
+for (var i = 0; i < 4; i++) {
+  generateObject();
+  generatedWizards.push(generateObject());
 }
 
 var similarListElement = setup.querySelector('.setup-similar-list');
@@ -43,11 +45,15 @@ var renderWizard = function (wizard) {
 
 var fragment = document.createDocumentFragment();
 
-for (var j = 0; j < generatedWizards.length; j++) {
-  fragment.appendChild(renderWizard(generatedWizards[j]));
-}
+var addRenderedWizardsToTheList = function (createdFragment, wizards, list) {
+  for (var j = 0; j < wizards.length; j++) {
+    createdFragment.appendChild(renderWizard(wizards[j]));
+  }
 
-similarListElement.appendChild(fragment);
+  list.appendChild(createdFragment);
+};
+
+addRenderedWizardsToTheList(fragment, generatedWizards, similarListElement);
 
 setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
 
